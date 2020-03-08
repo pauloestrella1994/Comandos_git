@@ -1,0 +1,156 @@
+# INSTALANDO E CONFIGURANDO O GIT
+
+sudo apt git install #Comando de instalação do git 
+git --version #verifica a versão do git
+git config --global user.name (inserir nome do usuário) #configura o nome do usuário que commita os arquivos
+git config --global user.email (inserir email do usuário) #configura o email do usuário que commita os arquivos
+git config --global core.editor "code --wait" #configura o visual studio code como editor padrão (core) do git
+git config --global user.editor "code --wait" #configura o visual studio code como editor padrão do usuário do git
+git config --global --l #mostra a configuração atual do git
+git config --global --unset (inserir chave que quer deletar) #deleta configurações determinadas
+rm -rf -git #exclui o repositório git e os commits lá armazenados
+
+# CRIANDO UM REPOSITÓRIO LOCAL GIT
+
+git init #inicializa um repositório vazio como um arquivo oculto
+cd .git #abre meu repositório git
+git status #mostra o status do repositório git
+
+# ADICIONANDO E COMIITANDO ARQUIVOS NO REPOSITÓRIO GIT
+
+git add (nome do arquivo) #adiciona o arquivo no repositório do git, possibilitando commitar futuramente
+git add . #adiciona todos os arquivos que estão na pasta de trabalho no repositório git
+git commit -m "(inserir mensagem do commit)" #commita o arquivo
+git commit -am "(inserir mensagem do commit)" #faz um novo commmit para arquivos que já foram commitados sem a necessidade de adicioná-lo novamente
+git commit --amend -m "(inserir nova mensagem no commit)" #altera a mensagem do último commit
+
+# EXPLICAÇÃO DE RENOMEAÇÃO DE COMMITS ANTERIORES (EXTRA)
+
+Para mudar mensagens de commits anteriores ao último commit, você pode usar o git rebase -i (modo interativo do rebase):
+
+Procure o hash do commit que você quer mudar como git log. Ex: f0b5417
+Execute o comando git rebase -i f0b5417~1 (repare no ~1, que pega o commit anterior)
+Será aberto um editor de texto. Mude de pick para reward o commit com a mensagem incorreta. Salve o arquivo e feche o editor.
+O editor de texto vai abrir de novo no commit que você colocou reword. Corrija a mensagem! Salve o arquivo e feche o editor.
+Os commits teriam as mensagens modificadas. Mas ao tentar dar push para o repositório remoto, irá dar erro…
+
+Você precisará forçar a barra no push para que o Git aceite mudar o histórico do repositório remoto.
+
+Antes de continuar, tome cuidado e fale para a sua equipe não comitar nada. Faça o pull do repositório remoto e faça:
+
+git push origin --force master
+Mas lembrando: É MELHOR NÃO FAZER!
+
+# VERIFICANDO COMMITS  
+
+git log #mostra a árvore/histórico de commits (utilizar o ENTER para ir verificando todos os commits que não couberam na tela do terminal, utilize q para sair)
+git log -1 #mostra o último commmit
+git log --oneline #mostra os commits em uma linha
+git log --oneline --graph #mostra os commits em uma linha e em forma de gráfico
+git show (código de hash do commit) #mostra o que foi feito no último commit (atualização do código)
+git log -1 --stat #mostra as informações de linhas atualizadas no arquivo
+git log --author (nome do usuário) #mostra os commits feitos pelo usuário
+git log --parents #mostra as relações de commits por código de hash
+git diff #mostra as modificações feitas no repositório antes de commitar, podendo ser utilizado também para verificações de arquivos exclusivos, basta adicionar o nome do arquivo após o comando (Ex: git diff Texto.txt)
+git diff --cached #ou git diff --staged #mostra as modificações feitas no repositório em comparação com o último stage adicionado ao git
+git diff (código hash mais antigo).. (código de hash mais novo) #compara as modificações de dois commits 
+
+# IGNORANDO ARQUIVOS
+
+Criar um arquivo .gitignore no repositório e colocar o nome dos arquivos do repositório que deseja ignorar.
+
+# DESFAZER MODIFICAÇÕES 
+
+git checkout --(nome do arquivo) #desfaz modificações que não estão em stage no repositório
+git reset (nome do arquivo) #retira o arquivo da stage e coloca no modo untracked
+git reset --soft (código de hash "Pai") #elimina commits anteriores, voltando para stage (Ex: para eliminar o segundo e o terceiro commit, utiliza-se a hash do primeiro commit (commit "Pai"))
+git reset --hard (código de hash "Pai") #elimina commits anteriores, voltando para stage e elimina as alterações dos arquivos (Ex: para eliminar o segundo e o terceiro commit, utiliza-se a hash do primeiro commit (commit "Pai"))
+git revert --no-edit(código de hash) #gera um novo commit que reverte o commit anterior, mantem-se assim o histórico de commits
+
+# ALTERANDO ARQUIVOS
+
+git rm #remove arquivos e coloca em status "deleted"
+git mv (nome do arquivo antigo) (nome do arquivo novo) #renomeia arquivos
+
+# CRIANDO REPOSITÓRIOS NO GITHUB
+
+git remote add origin (url do repositório git) #inicializa a comunicação com o repositório local com o da nuvem
+git remote -v #mostra a url do repositório conectado
+git push origin master #faz o push do repositório local para a nuvem
+
+#CLONANDO PROJETOS DO GITHUB
+
+git clone (url do projeto) (nome do repositório) #clona o repositório da nuvem para o repositório local
+git pull origin master #puxa as atualizações do projeto para o repositório local
+
+#CRIANDO BRANCHS
+
+git branch #lista as minhas branchs do meu repositório
+git branch (nome da branch) #cria uma branch, para acessá-la, basta utilizar o comando git checkout (nome da branch),  ou com git checkout -b (nome da branch), para este último caso cria-se uma branch nova e já faz checkout para trabalhar dentro dela
+git branch -d (nome da branch) #deleta a branch escolhida
+git branch -D (nome da branch) #deleta uma branch que contenha algum arquivo não mergiado
+
+# MESCLANDO COM MERGE E REBASE
+
+git merge (nome do branch) #mescla o branch externo com o branch atualizado. Para recursos fast fowards, não é necessário adicionar uma mensagem. Mas para recursos em que há conflitos de commits entre as branchs, é necessário passar a mensagem com o comando -m
+git rebase (nome do branch) #aplicando esta operação, estando na master, o git "separa" o commit da master, aplica faz o merge da branch ramificada para a principal (semellhante ao fastfoward) e, após isso, cria um novo commit, na branch master, com as alterações do antigo commit da master que foi separado (exemplo útil para grandes projetos com muitas branchs)
+
+#CONFLITOS DE MERGE
+
+Conflitos podem acontecer ao tentar executar um merge com dois commits, em branchs diferentes, que possuem alterações nas mesmas linhas. Conflitos são comunicados pelo git.
+Para resolvê-los, deve-se alterar as linhas de código.
+
+git merge --abort #cancela o merge
+git rebase --continue #continua o processo de rebase, após resolvido o conflito
+
+# TRACKEANDO BRANCHS
+
+git branch -r #mostra a lista de branchs remotas
+git push -u origin master #atualiza os commits ("Trackeia) da branch remota origin, baseado nos commits da branch local. Esse comando é uma simplificação do comando "git push origin master:master" que significa a direção de trackeamento da branch origin master local para a branch remota master.
+git push --set-upstream origin (nome da branch) #Trackeia a branch local com uma mesma branch existente no espaço remoto
+git branch -a #mostra todas as branchs, locais e remotas
+git push #trackeia a branch com parâmetros default (usado quando já foi feito um trackeamento entre as branchs)
+
+# CRIANDO BRANCHS REMOTAS TRACKEANDO-AS
+
+Ao criar uma branch remota que não existe localmente, por exemplo, utilizando o comando "git push origin master:(nome da nova branch que será criada no repositório remoto)", podemos criar a mesma branch para o local e trackeá-las, usando o comando:
+
+git branch bug origin/bug #sendo bug o nome da minha branch que está no repositório remoto
+
+Essa operação simula quando um desenvolvedor da equipe cria um repositório com várias branchs e você o clona. Assim, ao clonar, a única branch local criada será a "master" e você deve criar as branchs locais e trackeá-las para conseguir trabalhar com elas localmente e, futuramente, atualizar para o repositório remoto.
+
+#EXCLUINDO BRANCHS LOCAIS E REMOTAS
+
+git branch -d (nome da branch que deseja excluir) #exclui branch local
+git push origin :(nome da branch que deseja excluir) #exclui a branch remota
+
+# CONFIGURANDO CHAVE SSH
+
+cd ~/ .ssh #checa se os computador do usuário possui chave SSH
+cat id_rsa.pub #acessa a chave pública que está no seu computador
+
+Caso não haja uma chave ssh em seu computador, faça os comandos para criar uma nova chave ssh:
+
+ssh-keygen -t rsa -b 4096 -C "seu email do github dentro das aspas"
+
+Acessando o github, em settings, clique em adicionar nova chave SSH. Adicione um título para ela e insira a chave SSH gerada no terminal.
+
+Assim, ao clonar algum repositório do github, com o link SSH, todos os pushs poderão ser feitos sem a necessidade de se autenticar no terminal.
+
+# ALIAS (ABREVIAÇÕES DE COMANDOS DO GIT)
+
+git config -l #mostra as configurações default do git, inclusive as Alias já criadas
+git config alias.(novo nome do comando) "Nome do comando do git" #configura um alias novo para o comando
+git config --unset alias.(nome do alias a ser excluído) #exclui o alias do comando
+
+
+
+
+
+
+
+
+
+
+
+
