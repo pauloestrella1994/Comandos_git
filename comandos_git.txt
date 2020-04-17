@@ -8,7 +8,7 @@ git config --global core.editor "code --wait" #configura o visual studio code co
 git config --global user.editor "code --wait" #configura o visual studio code como editor padrão do usuário do git
 git config --global --l #mostra a configuração atual do git
 git config --global --unset (inserir chave que quer deletar) #deleta configurações determinadas
-rm -rf -git #exclui o repositório git e os commits lá armazenados
+rm -rf .git/ #exclui o repositório git e os commits lá armazenados
 
 # CRIANDO UM REPOSITÓRIO LOCAL GIT
 
