@@ -143,6 +143,24 @@ git config -l #mostra as configurações default do git, inclusive as Alias já 
 git config alias.(novo nome do comando) "Nome do comando do git" #configura um alias novo para o comando
 git config --unset alias.(nome do alias a ser excluído) #exclui o alias do comando
 
+# GIT STASH
+
+Git stash é um conjunto de comandos capaz de guardar, temporariamente (não deixe alterações em arquivos lá para sempre!), alterações em arquivos não adicionados em stage, nem commitados. Assim, alterar e 'desalterar' um conjunto de arquivos fica mais facil
+
+git stash #os arquivos alterados, que aparecem no git status, são salvos, sem a necessidade de commitar, em umas pasta 'a parte', como um backup que possui um hash.
+
+git stash apply (hash do stash)#os arquivos alterados voltam para stage, basta dar um git status após rodar esse comando. Se nenhum hash for passado, ele retorna o ultimo stash da pilha
+
+git stash pop #remove o ultimo stash
+
+git stash list #lista todos os stashs que o git está armazenando no repositório
+
+git stash show (hash do stash) #mostra as modificações ocorridas no ultimo stash, caso nenhum hash for passado
+
+git stash drop #apaga o ultimo stash da pilha
+
+git stash clear #apaga todos os stashs da pilha
+
 
 
 
