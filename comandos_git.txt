@@ -161,6 +161,10 @@ git stash drop #apaga o ultimo stash da pilha
 
 git stash clear #apaga todos os stashs da pilha
 
+# GIT REFLOG
+git reflog #comando utilizado para vizualizar os logs de todo o histórico de versionamento que houve na branch, use o comando adicional '--all' para ver o ghistórico de movimentação das branchs também
+
+
 
 
 
