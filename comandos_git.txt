@@ -168,6 +168,7 @@ git reflog #comando utilizado para vizualizar os logs de todo o histórico de ve
 git bisect start #esse comando marca o começo de uma busca binária na qual o git ajuda a procurar um commit que possa ter causado um erro no código. Para isso, é necessário prover um start point e um endpoint para a busca.
 git bisect bad (hash do commit) #com esse comando é possível sinalizar que esse commit foi o que introduziu um erro no código.
 git bisect good (hash do commit) #já o comando good, marca o commit como sendo o último, ou um dos ultimos, os quais não introduziu um bug no código.
+git bisect reset #retira todas as marcações adicionadas na branch
 
 
 
